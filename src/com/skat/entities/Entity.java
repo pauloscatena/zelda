@@ -4,14 +4,17 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.skat.graphics.Spritesheet;
+import com.skat.main.Game;
+import com.skat.world.Camera;
 
-public class Entity {
+public abstract class Entity {
+
 	private double x;
 	private double y;
 	private int width;
-	private int height;
-	
+	private int height;	
 	private Spritesheet sprite;
+	private BufferedImage myImage;
 	
 	public Entity(double x, double y, int width, int height, Spritesheet sprite) {
 		this.x = x;
@@ -19,6 +22,14 @@ public class Entity {
 		this.width = width;
 		this.height = height;
 		this.sprite = sprite;
+	}
+	
+	public void setMyImage(BufferedImage img) {
+		this.myImage = img;
+	}
+	
+	public Spritesheet getSpritesheet() {
+		return this.sprite;
 	}
 	
 	public void setX(double x) {
@@ -53,11 +64,23 @@ public class Entity {
 		return this.height;
 	}
 	
+	protected int getXCamera() {
+		return this.getX() - Camera.x;
+	}
+	
+	protected int getYCamera() {
+		return this.getY() - Camera.y;
+	}
+	
 	public void Tick() {
 		
 	}
 	
 	public void Render(Graphics g) {
-		//g.drawImage(sprite, this.getX(), this.getY(), this.getWidth(), this.getHeight(), null);
+		Draw(g, this.myImage);
+	}
+	
+	private void Draw(Graphics g, BufferedImage img) {
+		g.drawImage(img, this.getXCamera(), this.getYCamera(), this.getWidth(), this.getHeight(), null);
 	}
 }

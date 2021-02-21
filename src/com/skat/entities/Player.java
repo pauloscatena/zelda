@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.skat.graphics.Spritesheet;
+import com.skat.main.Game;
+import com.skat.world.Camera;
+import com.skat.world.World;
 
 public class Player extends Entity {
 
@@ -19,7 +22,7 @@ public class Player extends Entity {
 	
 	public Player(int x, int y, int width, int height, Spritesheet sprite) {
 		super(x, y, width, height, sprite);
-		this.speed = 1.2;
+		this.speed = 1;
 		this.maxFrames = 5;
 		this.maxSpriteIndex = 3;
 		
@@ -62,6 +65,9 @@ public class Player extends Entity {
 			}			
 		}
 		this.checkMaxSprite();
+		
+		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH *16 - Game.WIDTH);
+		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT * 16- Game.HEIGHT);
 	}
 	
 	private void checkMaxSprite() {
@@ -73,10 +79,10 @@ public class Player extends Entity {
 
 	public void Render(Graphics g) {
 		if(direction >= 0 || (this.isMoving && this.right)) {
-			g.drawImage(this.rightPlayer[this.spriteIndex], this.getX(), this.getY(), this.getWidth(), this.getHeight(), null);	
+			g.drawImage(this.rightPlayer[this.spriteIndex], this.getXCamera(), this.getYCamera(), this.getWidth(), this.getHeight(), null);	
 		}
 		else if(direction < 0 || (this.isMoving && this.left)) {
-			g.drawImage(this.leftPlayer[this.spriteIndex], this.getX(), this.getY(), this.getWidth(), this.getHeight(), null);
+			g.drawImage(this.leftPlayer[this.spriteIndex], this.getXCamera(), this.getYCamera(), this.getWidth(), this.getHeight(), null);
 		}		
 	}
 

@@ -16,29 +16,35 @@ import javax.swing.JFrame;
 import com.skat.entities.Entity;
 import com.skat.entities.Player;
 import com.skat.graphics.Spritesheet;
+import com.skat.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
-	private final int WIDTH = 240;
-	private final int HEIGHT = 160;
-	private final int SCALE = 3;
+	public final static int WIDTH = 240;
+	public static final int HEIGHT = 160;
+	public static final int SCALE = 3;
 	
 	private BufferedImage image;
-	private List<Entity> entities;
-	private Spritesheet spritesheet;
-	private Player player;
+	public static List<Entity> entities;
+	public static Spritesheet spritesheet;
+	public static Player player;
+	
+	public static World world;
 	public Game() {
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
+
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
-		
 		player = new Player(0, 0, 16, 16, spritesheet);
+		world = new World("/map.png");
+		
+
 		entities.add(player);
 	}
 	
@@ -95,11 +101,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 		
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(0,255,0));
+		g.setColor(new Color(0,0,0));
 		g.fillRect(0,0, WIDTH, HEIGHT);
 		
 		//Graphics2D g2 = (Graphics2D)g;
-
+		world.Render(g);
 		for(int entIndex = 0; entIndex < entities.size(); entIndex++) {
 			Entity entity = entities.get(entIndex);
 			entity.Render(g);
