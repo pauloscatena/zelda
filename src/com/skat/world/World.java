@@ -10,7 +10,6 @@ import com.skat.entities.Ammo;
 import com.skat.entities.Enemy;
 import com.skat.entities.Life;
 import com.skat.entities.Weapon;
-import com.skat.graphics.Spritesheet;
 import com.skat.main.Game;
 
 public class World {
@@ -21,7 +20,7 @@ public class World {
     private final int LIFE = 0XFFFF006E;
     private final int GRASS = 0xFF000000;
     private final int WEAPON = 0XFF7F0000;
-    private Tile[] tiles;
+    private static Tile[] tiles;
     public static int WIDTH, HEIGHT;
 	
 	public World(String path) {
@@ -84,4 +83,26 @@ public class World {
 			}
 		}
 	}	
+	
+	public static boolean isFree(double xpNext, double ypNext) {
+		int xNext = (int)xpNext;
+		int yNext = (int)ypNext;
+		
+		int x1 = xNext / 16;
+		int y1 = yNext / 16;		
+		
+		int x2 = (xNext + 15) / 16;
+		int y2 = yNext / 16;
+
+		int x3 = xNext / 16;
+		int y3 = (yNext + 15) / 16;		
+		
+		int x4 = (xNext + 15) / 16;
+		int y4 = (yNext + 15) / 16;
+		
+		return  !((tiles[x1 + (y1 * World.WIDTH)] instanceof WallTile) ||
+				(tiles[x2 + (y2 * World.WIDTH)] instanceof WallTile) ||
+				(tiles[x3 + (y3 * World.WIDTH)] instanceof WallTile) ||
+				(tiles[x4 + (y4 * World.WIDTH)] instanceof WallTile));
+	}
 }

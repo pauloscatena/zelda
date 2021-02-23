@@ -48,12 +48,12 @@ public abstract class Entity {
 		this.height = height;
 	}
 	
-	public int getX() {
-		return (int)this.x;
+	public double getX() {
+		return this.x;
 	}
 	
-	public int getY() {
-		return (int)this.y;
+	public double getY() {
+		return this.y;
 	}
 	
 	public int getWidth() {
@@ -65,11 +65,11 @@ public abstract class Entity {
 	}
 	
 	protected int getXCamera() {
-		return this.getX() - Camera.x;
+		return (int)(this.getX() - Camera.x);
 	}
 	
 	protected int getYCamera() {
-		return this.getY() - Camera.y;
+		return (int)(this.getY() - Camera.y);
 	}
 	
 	public void Tick() {

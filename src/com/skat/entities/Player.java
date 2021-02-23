@@ -35,24 +35,33 @@ public class Player extends Entity {
 		}		
 	}
 	
+	private boolean checkCollision(double x, double y) {
+		return World.isFree(x, y);
+	}
+	
+    private void move(double x, double y) {
+		if(checkCollision(x, y)) {
+			setX(x);
+			setY(y);
+			this.isMoving = true;
+		}
+	}
+	
 	public void Tick() {
 		this.isMoving = false;
+		
 		if(right) {
-			setX(getX() + speed);
-			this.isMoving = true;
+			move((this.getX() + speed), this.getY());
 			this.last_direction = 1;
 		} else if(left) {
-			setX(getX() - speed);
-			this.isMoving = true;
+			move((this.getX() - speed), this.getY());
 			this.last_direction = -1;
 		}
 		
 		if(up) {
-			setY(getY() - speed);
-			this.isMoving = true;
+			move(this.getX(), (this.getY() - speed));
 		} else if(down) {
-			setY(getY() + speed);
-			this.isMoving = true;
+			move(this.getX(), (this.getY() + speed));
 		}
 		
 		if(this.isMoving)
@@ -64,10 +73,13 @@ public class Player extends Entity {
 				this.spriteIndex++;
 			}			
 		}
-		this.checkMaxSprite();
-		
-		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH *16 - Game.WIDTH);
-		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT * 16- Game.HEIGHT);
+		this.checkMaxSprite();		
+		this.clamp();
+	}
+	
+	private void clamp() {
+		Camera.x = Camera.clamp((int)this.getX() - (Game.WIDTH/2), 0, World.WIDTH *16 - Game.WIDTH);
+		Camera.y = Camera.clamp((int)this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT * 16- Game.HEIGHT);
 	}
 	
 	private void checkMaxSprite() {
