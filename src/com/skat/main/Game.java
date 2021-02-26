@@ -10,12 +10,15 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.skat.entities.Enemy;
 import com.skat.entities.Entity;
 import com.skat.entities.Player;
 import com.skat.graphics.Spritesheet;
+import com.skat.graphics.UI;
 import com.skat.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener {
@@ -29,17 +32,25 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	private BufferedImage image;
 	public static List<Entity> entities;
+	public static List<Enemy> enemies;
 	public static Spritesheet spritesheet;
 	public static Player player;
 	
 	public static World world;
+	public static Random rand;
+	
+	public UI ui;
+	
 	public Game() {
+		rand = new Random();
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
+		ui = new UI();
 
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
+		enemies = new ArrayList<Enemy>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, 16, 16, spritesheet);
 		world = new World("/map.png");
@@ -110,7 +121,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			Entity entity = entities.get(entIndex);
 			entity.Render(g);
 		}
-		
+		ui.Render(g);
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0,0,WIDTH*SCALE, HEIGHT*SCALE, null);

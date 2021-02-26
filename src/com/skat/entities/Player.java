@@ -12,6 +12,8 @@ public class Player extends Entity {
 
 	public boolean right, left, up, down;
 	private double speed;
+	public double life;
+	public double maxLife;
 	
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
@@ -22,6 +24,8 @@ public class Player extends Entity {
 	
 	public Player(int x, int y, int width, int height, Spritesheet sprite) {
 		super(x, y, width, height, sprite);
+		this.life = 100;
+		this.maxLife = 100;
 		this.speed = 1;
 		this.maxFrames = 5;
 		this.maxSpriteIndex = 3;
@@ -73,7 +77,8 @@ public class Player extends Entity {
 				this.spriteIndex++;
 			}			
 		}
-		this.checkMaxSprite();		
+		this.checkMaxSprite();	
+		this.checkItems();
 		this.clamp();
 	}
 	
@@ -97,5 +102,29 @@ public class Player extends Entity {
 			g.drawImage(this.leftPlayer[this.spriteIndex], this.getXCamera(), this.getYCamera(), this.getWidth(), this.getHeight(), null);
 		}		
 	}
+	
+	public void LoseLife(int strength) {
+		this.life -= strength;
+	}
 
+	public void AddLife(int life) {
+		this.life += life;
+		if(this.life > this.maxLife) {
+			this.life = this.maxLife;
+		}
+	}
+	
+	private void checkItems() {
+		for(int i = 0; i < Game.entities.size(); i++) {
+			Entity e = Game.entities.get(i);
+			
+			if(e instanceof Life) {
+				if(this.isColliding(e)) {
+					this.AddLife(10);
+					Game.entities.remove(i);
+					return;
+				}
+			}
+		}
+	}
 }

@@ -13,7 +13,7 @@ import com.skat.entities.Weapon;
 import com.skat.main.Game;
 
 public class World {
-	private final int ENEMY = 0xFFFF006E;
+	private final int ENEMY = 0xFFFF0000;
 	private final int WALL = 0xFFFFFFFF;
 	private final int PLAYER = 0xFF0026FF;
     private final int AMMO = 0xFFFFD800;
@@ -55,7 +55,9 @@ public class World {
 					Game.player.setX(x * 16);
 					Game.player.setY(y * 16);
 				} else if (item == ENEMY) {
-					Game.entities.add(new Enemy(x * 16, y * 16, 16,16, Game.spritesheet));
+					Enemy e = new Enemy(x * 16, y * 16, 16,16, Game.spritesheet);
+					Game.entities.add(e);
+					Game.enemies.add(e);
 				} else if (item == WEAPON) {
 					Game.entities.add(new Weapon(x * 16, y * 16, 16,16, Game.spritesheet));
 				} else if (item == LIFE) {
